@@ -1,0 +1,34 @@
+<li class="chore {% if chore.is_overdue %}overdue{% endif %}">
+  <div class="chore-main">
+    <span class="pts">{{ chore.points }}</span>
+    <div>
+      <a class="chore-name" href="{% url 'chore_edit' chore.pk %}">{{ chore.name }}</a>
+      <div class="meta">
+        <span class="tag">{{ chore.get_category_display }}</span>
+        {% if chore.assigned_to %}
+          <a href="{% url 'member_detail' chore.assigned_to.pk %}">{{ chore.assigned_to }}</a>
+        {% else %}
+          <span class="unowned">unclaimed</span>
+        {% endif %}
+        {% if chore.due_at %}&middot; due {{ chore.due_at|date:"D j M, H:i" }}{% endif %}
+        {% if chore.recurrence != "none" %}&middot; {{ chore.get_recurrence_display|lower }}{% endif %}
+        {% if chore.status != "pending" %}&middot; <b>{{ chore.get_status_display|lower }}</b>{% endif %}
+        {% if chore.pause_count %}&middot; {{ chore.pause_count }} pause{{ chore.pause_count|pluralize }}{% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="actions">
+    {% if not chore.assigned_to %}
+      <form method="post" action="{% url 'chore_action' chore.pk 'claim' %}">
+        {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
+        <button class="claim">Claim</button>
+      </form>
+    {% endif %}
+    {% for action in chore.actions %}
+      <form method="post" action="{% url 'chore_action' chore.pk action %}">
+        {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
+        <button class="{{ action }}">{{ action|capfirst }}</button>
+      </form>
+    {% endfor %}
+  </div>
+</li>

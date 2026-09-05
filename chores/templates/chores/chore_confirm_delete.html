@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Delete this chore?</h1>
+<div class="card">
+  <p><b>{{ chore.name }}</b> &mdash; {{ chore.get_category_display }},
+     {{ chore.points }} point{{ chore.points|pluralize }}
+     {% if chore.assigned_to %}, {{ chore.assigned_to }}{% else %}, unclaimed{% endif %}.</p>
+  {% if chore.status == "completed" and chore.points_awarded %}
+    <p class="hint">Already finished. The
+      {{ chore.points_awarded }} point{{ chore.points_awarded|pluralize }}
+      {% if chore.completed_by %}{{ chore.completed_by }} {% endif %}earned
+      stay on the leaderboard &mdash; only the chore goes.</p>
+  {% endif %}
+  <form method="post">
+    {% csrf_token %}
+    <button class="danger">Delete</button>
+    <a class="cancel" href="{% url 'dashboard' %}">Cancel</a>
+  </form>
+</div>
+{% endblock %}

@@ -23,3 +23,7 @@ Thumbs.db
 build/
 dist/
 *.egg-info/
+
+# Django
+db.sqlite3
+staticfiles/

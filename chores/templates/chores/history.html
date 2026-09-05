@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Completion history</h1>
+<form class="filters" method="get">
+  <select name="member">
+    <option value="">Everyone</option>
+    {% for m in members %}<option value="{{ m.pk }}" {% if selected_member == m.pk|stringformat:"s" %}selected{% endif %}>{{ m.name }}</option>{% endfor %}
+  </select>
+  <button>Filter</button>
+</form>
+
+{% if burned %}
+  <h2>Finished but unclaimed</h2>
+  <p class="hint">Nobody owned these, so their points were burned. If you did one,
+    you can still put your name to it &mdash; at half rate.</p>
+  <table class="history">
+    <tr><th>Chore</th><th>Done by</th><th>Finished</th><th>Worth</th><th></th></tr>
+    {% for chore in burned %}
+      <tr>
+        <td>{{ chore.name }}</td>
+        <td>{% if chore.completed_by %}{{ chore.completed_by }}{% else %}<span class="unowned">unknown</span>{% endif %}</td>
+        <td>{{ chore.completed_at|date:"j M Y, H:i" }}</td>
+        <td><span class="unowned">0 pts</span></td>
+        <td>
+          {% if chore.reclaimable %}
+            <form method="post" action="{% url 'chore_action' chore.pk 'reclaim' %}">
+              {% csrf_token %}<input type="hidden" name="next" value="{{ request.path }}">
+              <button class="claim">Reclaim</button>
+            </form>
+          {% endif %}
+        </td>
+      </tr>
+    {% endfor %}
+  </table>
+{% endif %}
+
+<h2>Points earned</h2>
+<table class="history">
+  <tr><th>Chore</th><th>Who</th><th>Earned</th><th>Pauses</th><th>Points</th></tr>
+  {% for award in awards %}
+    <tr>
+      <td>{{ award.chore_name }}{% if not award.chore %} <span class="meta">(chore deleted)</span>{% endif %}</td>
+      <td>{{ award.member }}</td>
+      <td>{{ award.awarded_at|date:"j M Y, H:i" }}</td>
+      <td>{{ award.pauses }}</td>
+      <td>{{ award.points }}{% if award.reason == "reclaimed" %} <span class="meta">reclaimed</span>{% endif %}</td>
+    </tr>
+  {% empty %}
+    <tr><td colspan="5" class="empty">No points earned yet.</td></tr>
+  {% endfor %}
+</table>
+{% endblock %}

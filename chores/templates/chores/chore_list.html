@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>All open chores</h1>
+<form class="filters" method="get">
+  <select name="member">
+    <option value="">Everyone</option>
+    {% for m in members %}<option value="{{ m.pk }}" {% if selected_member == m.pk|stringformat:"s" %}selected{% endif %}>{{ m.name }}</option>{% endfor %}
+  </select>
+  <select name="category">
+    <option value="">All categories</option>
+    {% for value, label in categories %}<option value="{{ value }}" {% if selected_category == value %}selected{% endif %}>{{ label }}</option>{% endfor %}
+  </select>
+  <button>Filter</button>
+</form>
+{% if chores %}
+  <ul class="chores">{% for chore in chores %}{% include "chores/_chore.html" %}{% endfor %}</ul>
+{% else %}
+  <p class="empty">No open chores match. <a href="{% url 'chore_new' %}">Add one?</a></p>
+{% endif %}
+{% endblock %}

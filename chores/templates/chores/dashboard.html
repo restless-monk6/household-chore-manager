@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="cols">
+  <section class="main-col">
+    {% if overdue %}
+      <h2 class="danger">Overdue <span class="count">{{ overdue|length }}</span></h2>
+      <ul class="chores">{% for chore in overdue %}{% include "chores/_chore.html" %}{% endfor %}</ul>
+    {% endif %}
+
+    <h2>Due today <span class="count">{{ today|length }}</span></h2>
+    {% if today %}
+      <ul class="chores">{% for chore in today %}{% include "chores/_chore.html" %}{% endfor %}</ul>
+    {% else %}<p class="empty">Nothing else due today.</p>{% endif %}
+
+    {% if in_progress %}
+      <h2>In progress</h2>
+      <ul class="chores">{% for chore in in_progress %}{% include "chores/_chore.html" %}{% endfor %}</ul>
+    {% endif %}
+
+    <h2>Up for grabs <span class="count">{{ pool|length }}</span></h2>
+    {% if pool %}
+      <p class="hint">Unclaimed chores burn their points. Claim one first to score.</p>
+      <ul class="chores">{% for chore in pool %}{% include "chores/_chore.html" %}{% endfor %}</ul>
+    {% else %}<p class="empty">Everything has an owner.</p>{% endif %}
+
+    {% if undated %}
+      <h2>No due date</h2>
+      <ul class="chores">{% for chore in undated %}{% include "chores/_chore.html" %}{% endfor %}</ul>
+    {% endif %}
+  </section>
+
+  <aside class="side-col">
+    <h2>Leaderboard</h2>
+    <ol class="board">
+      {% for row in leaderboard %}
+        <li>
+          <a href="{% url 'member_detail' row.member.pk %}">{{ row.member }}</a>
+          <b>{{ row.points }}</b>
+          <div class="meta">
+            {% if row.streak %}{{ row.streak }}-day streak{% else %}no streak{% endif %}
+            {% if row.clean_run_rate is not None %}&middot; {{ row.clean_run_rate }}% clean{% endif %}
+          </div>
+        </li>
+      {% empty %}
+        <li class="empty">No members yet &mdash; add some in <a href="/admin/">the admin</a>.</li>
+      {% endfor %}
+    </ol>
+  </aside>
+</div>
+{% endblock %}

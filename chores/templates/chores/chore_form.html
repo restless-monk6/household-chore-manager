@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ heading }}</h1>
+<form method="post" class="card form">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <datalist id="catalog-names">
+    {% for name in form.catalog_names %}<option value="{{ name }}">{% endfor %}
+  </datalist>
+  <p class="hint">Leave points blank and a standard chore prices itself.</p>
+  <button class="primary">Save</button>
+  <a class="cancel" href="{% url 'dashboard' %}">Cancel</a>
+  {% if chore %}<a class="delete-link" href="{% url 'chore_delete' chore.pk %}">Delete</a>{% endif %}
+</form>
+{% endblock %}

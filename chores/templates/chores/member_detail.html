@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ member }}</h1>
+<div class="stats">
+  <div class="stat"><b>{{ points }}</b><span>points</span></div>
+  <div class="stat"><b>{{ streak }}</b><span>day streak</span></div>
+  <div class="stat"><b>{% if clean_run_rate is not None %}{{ clean_run_rate }}%{% else %}&mdash;{% endif %}</b><span>clean runs</span></div>
+</div>
+
+<h2>Open chores</h2>
+{% if open_chores %}
+  <ul class="chores">{% for chore in open_chores %}{% include "chores/_chore.html" %}{% endfor %}</ul>
+{% else %}<p class="empty">Nothing outstanding.</p>{% endif %}
+
+<h2>Recently earned</h2>
+<ul class="done">
+  {% for award in recent %}
+    <li>{{ award.chore_name }}
+      <span class="meta">{{ award.awarded_at|date:"j M, H:i" }} &middot;
+        {{ award.points }} pt{{ award.points|pluralize }}
+        {% if award.reason == "reclaimed" %}&middot; reclaimed{% endif %}
+        {% if not award.chore %}&middot; chore deleted{% endif %}</span></li>
+  {% empty %}<li class="empty">Nothing yet.</li>{% endfor %}
+</ul>
+{% endblock %}

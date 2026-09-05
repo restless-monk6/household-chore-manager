@@ -1,0 +1,39 @@
+{% load static %}<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Household Chores{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'app.css' %}">
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="{% url 'dashboard' %}">Household Chores</a>
+  <nav>
+    <a href="{% url 'dashboard' %}">Dashboard</a>
+    <a href="{% url 'chore_list' %}">All chores</a>
+    <a href="{% url 'history' %}">History</a>
+    <a class="add" href="{% url 'chore_new' %}">+ Add chore</a>
+  </nav>
+  <form class="whoami" method="post" action="{% url 'set_actor' %}">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ request.path }}">
+    <label>I am</label>
+    <select name="member" onchange="this.form.submit()">
+      <option value="">nobody yet</option>
+      {% for m in members %}
+        <option value="{{ m.pk }}" {% if actor and actor.pk == m.pk %}selected{% endif %}>{{ m.name }}</option>
+      {% endfor %}
+    </select>
+  </form>
+</header>
+
+{% if messages %}
+<ul class="messages">
+  {% for message in messages %}<li class="{{ message.tags }}">{{ message }}</li>{% endfor %}
+</ul>
+{% endif %}
+
+<main>{% block content %}{% endblock %}</main>
+</body>
+</html>
