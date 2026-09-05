@@ -32,10 +32,20 @@ chores/            the only app
   views.py         thin: parse request -> call a service -> render
   tests/           test_services, test_scoring, test_views,
                    test_commands, test_ledger, test_scenarios
-_docs/plan.md          the original brief
-_docs/architecture.md  design decisions and WHY — read this first
-_docs/backlog.md       tickets CH-01..CH-20, each with its test names
+_docs/             plan, architecture and backlog (see below)
 ```
+
+## Documentation
+
+- [_docs/architecture.md](_docs/architecture.md) — **read this first.** Every
+  design decision and the reasoning behind it, including the ones that were
+  reversed and why.
+- [_docs/plan.md](_docs/plan.md) — the original brief, scope and success
+  criteria. Check here before adding anything: several features are explicitly
+  out of scope.
+- [_docs/backlog.md](_docs/backlog.md) — tickets CH-01..CH-20, each listing the
+  test names that close it. New work should follow the same shape.
+- [README.md](README.md) — the public-facing overview.
 
 ## Domain rules
 
