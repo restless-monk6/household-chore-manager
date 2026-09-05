@@ -1,23 +1,14 @@
-# Claude Workspace
+# Claude
 
-This workspace is prepared for AI-assisted development work.
+**Read [AGENT.md](AGENT.md) first.** It is the working guide for this
+repository: commands, layout, the domain rules that must not be changed
+casually, and the mistakes already made here so you do not repeat them.
 
-## Project conventions
+Everything an agent needs lives in that file. Keep it current — when you learn
+something the next agent would want to know, add it there rather than here.
 
-- Keep changes small and focused.
-- Prefer clear, readable code and straightforward naming.
-- Preserve the existing project structure unless a task explicitly requires a new layout.
-- Validate changes with the smallest relevant command or check.
-- Be concise in explanations and avoid unnecessary formatting.
+## Further reading
 
-## Working style
-
-- Treat this repository as the source of truth for project tasks.
-- When asked to implement something, inspect the repository before editing.
-- If a feature or fix is not yet present, add the smallest viable implementation.
-- Prefer existing conventions over introducing new ones.
-
-## Notes
-
-- This folder is currently empty and ready for the next project setup or implementation task.
-- If the repository later gains a stack, update this file with project-specific commands and constraints.
+- [_docs/plan.md](_docs/plan.md) — the original brief and scope
+- [_docs/architecture.md](_docs/architecture.md) — design decisions and why
+- [_docs/backlog.md](_docs/backlog.md) — tickets, each with its test names
